@@ -3,15 +3,15 @@ require_relative "stepable"
 
 
 class King < Piece
-include Stepable
+ include Stepable
 
   def initialize(color)
     super
-    @symbol = "\u265A"
+    @symbol = "\u265B"
   end
 
   def moves_diffs
-    [[0,1][1,0],[-1,0],[0,-1][1,1],[-1,1],[1,-1],[-1,-1]]
+    [[0,1],[1,0],[-1,0],[0,-1],[1,1],[-1,1],[1,-1],[-1,-1]]
   end
 
 end

@@ -15,9 +15,14 @@ class Display
 
   def play_turn
     while true
-      puts render
-      pos = get_input
-      handle_move(pos) if !pos.nil?
+      begin
+        puts render
+        pos = get_input
+        handle_move(pos) if !pos.nil?
+      # rescue
+      #   @first_pos = nil
+      #   retry
+      end
     end
   end
 
@@ -25,15 +30,13 @@ class Display
     if(@first_pos.nil?)
       @first_pos = pos
     else
-      p @first_pos
-      p pos
       @board.move_piece(@first_pos, pos)
       @first_pos = nil
     end
   end
 
   def render
-    system("clear")
+    # system("clear")
     @board.grid.map.with_index {|row,i|
       row.map.with_index{|cell,j|
         if(@cursor.cursor_pos == [i,j])
@@ -46,6 +49,10 @@ class Display
       }.join('')
     }.join("\n")
   end
+end
+
+def reset
+  @first = nil
 end
 
 def is_tile_white?(i,j)

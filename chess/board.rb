@@ -16,8 +16,7 @@ class Board
       raise "No piece at position" if self[start_pos] == nil
       raise "Cannot move to this position" unless self[start_pos].is_valid_move?(start_pos, end_pos, self)
       self[start_pos], self[end_pos] = NullPiece.instance, self[start_pos]
-    # rescue
-
+      self[end_pos].moved = true
     end
   end
 
@@ -35,7 +34,7 @@ class Board
 
 def in_bounds?(pos)
   x,y = pos
-  x > 0 || y > 0 || x < @grid.length || y < @grid.length
+  x >= 0 && y >= 0 && x < @grid.length && y < @grid.length
 end
 
 def populate

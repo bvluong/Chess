@@ -5,7 +5,7 @@ class Queen < Piece
 
   def initialize(color)
     super
-    @symbol = "\u265B"
+    @symbol = "\u265A"
   end
 
   def move_dirs
