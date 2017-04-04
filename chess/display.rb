@@ -32,6 +32,7 @@ class Display
     else
       @board.move_piece(@first_pos, pos)
       @first_pos = nil
+      p @board.in_check?(:white)
     end
   end
 

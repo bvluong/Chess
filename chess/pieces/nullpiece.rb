@@ -17,7 +17,7 @@ class NullPiece < Piece
     true
   end
 
-  def moves
+  def moves(pos,board)
     []
   end
 end

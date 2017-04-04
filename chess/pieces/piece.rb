@@ -20,6 +20,7 @@ class Piece
 
     return board[pos].color == :black if @color == :white
     return board[pos].color == :white if @color == :black
+    false
   end
 
   def is_valid_move?(start_pos, end_pos, board)

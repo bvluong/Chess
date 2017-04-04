@@ -30,29 +30,48 @@ class Board
     @grid[row][col] = val
   end
 
+  def in_bounds?(pos)
+    x,y = pos
+    x >= 0 && y >= 0 && x < @grid.length && y < @grid.length
+  end
 
+  def populate
+    @grid[0] = populate_blacks
+    @grid[1] = Array.new(8){ Pawn.new(:black) }
+    @grid[7] = populate_whites
+    @grid[6] = Array.new(8){ Pawn.new(:white) }
+  end
 
-def in_bounds?(pos)
-  x,y = pos
-  x >= 0 && y >= 0 && x < @grid.length && y < @grid.length
-end
+  def populate_blacks
+    black_arr = [Rook.new(:black), Knight.new(:black), Bishop.new(:black), King.new(:black),
+    Queen.new(:black), Bishop.new(:black), Knight.new(:black), Rook.new(:black)]
+  end
 
-def populate
-  @grid[0] = populate_blacks
-  @grid[1] = Array.new(8){ Pawn.new(:black) }
-  @grid[7] = populate_whites
-  @grid[6] = Array.new(8){ Pawn.new(:white) }
-end
+  def populate_whites
+    white_arr = [Rook.new(:white), Knight.new(:white), Bishop.new(:white), King.new(:white),
+    Queen.new(:white), Bishop.new(:white), Knight.new(:white), Rook.new(:white)]
+  end
 
-
-def populate_blacks
-  black_arr = [Rook.new(:black), Knight.new(:black), Bishop.new(:black), King.new(:black),
-  Queen.new(:black), Bishop.new(:black), Knight.new(:black), Rook.new(:black)]
-end
-
-def populate_whites
-  white_arr = [Rook.new(:white), Knight.new(:white), Bishop.new(:white), King.new(:white),
-  Queen.new(:white), Bishop.new(:white), Knight.new(:white), Rook.new(:white)]
-end
+  def in_check? color
+    king_pos = nil
+    @grid.each.with_index{|row,i|
+      row.each.with_index{|cell,j|
+        king_pos = [i,j] if cell.is_a?(King) && cell.color == color
+      }
+    }
+    possible_moves = []
+    @grid.each.with_index{|row,i|
+      row.each_with_index{|cell,j|
+        p cell
+        p [i,j]
+        p cell.empty?
+        # possible_moves += cell.moves([i,j],self) unless cell.empty?
+      #  unless cell.empty?
+         possible_moves += cell.moves([i,j],self)
+      #  end
+      }
+    }
+    possible_moves.include? king_pos
+  end
 
 end
