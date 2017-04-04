@@ -15,8 +15,8 @@ class Piece
     false
   end
 
-  def is_valid_move?(pos, board)
-    board[pos].color != @color
+  def is_valid_move?(start_pos, end_pos, board)
+    board[end_pos].color != @color && moves(start_pos,board).include?(end_pos)
   end
 
 end

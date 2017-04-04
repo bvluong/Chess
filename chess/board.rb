@@ -14,9 +14,9 @@ class Board
   def move_piece(start_pos, end_pos)
     begin
       raise "No piece at position" if self[start_pos] == nil
-      raise "Cannot move to this position" unless self[start_pos].valid_move?(end_pos)
-      self[start_pos], self[end_pos] = self[end_pos], self[start_pos]
-    rescue
+      raise "Cannot move to this position" unless self[start_pos].is_valid_move?(start_pos, end_pos, self)
+      self[start_pos], self[end_pos] = NullPiece.instance, self[start_pos]
+    # rescue
 
     end
   end
@@ -40,9 +40,9 @@ end
 
 def populate
   @grid[0] = populate_blacks
-  @grid[1] = Array.new(8){ Pawn.new(:blacks) }
+  @grid[1] = Array.new(8){ Pawn.new(:black) }
   @grid[7] = populate_whites
-  @grid[6] = Array.new(8){ Pawn.new(:whites) }
+  @grid[6] = Array.new(8){ Pawn.new(:white) }
 end
 
 

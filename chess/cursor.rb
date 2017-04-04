@@ -87,7 +87,7 @@ class Cursor
       update_pos(MOVES[:down])
     when :ctrl_c
       Process.exit 0
-    when :space || :return
+    when :space, :return
       @cursor_pos
     # else # down
     end

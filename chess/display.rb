@@ -6,16 +6,29 @@ class Display
   def initialize board
     @board = board
     @cursor = Cursor.new([0,0], board)
+    @first_pos = nil
   end
 
   def get_input
-    input = @cursor.get_input
+    @cursor.get_input
   end
 
   def play_turn
     while true
       puts render
-      get_input
+      pos = get_input
+      handle_move(pos) if !pos.nil?
+    end
+  end
+
+  def handle_move pos
+    if(@first_pos.nil?)
+      @first_pos = pos
+    else
+      p @first_pos
+      p pos
+      @board.move_piece(@first_pos, pos)
+      @first_pos = nil
     end
   end
 
