@@ -6,9 +6,14 @@
 class Board
   attr_accessor :grid
 
+  def self.build
+      board = Board.new
+      board.populate
+      board
+  end
+
   def initialize(grid = Array.new(8) { Array.new(8) { NullPiece.instance} })
     @grid = grid
-    populate
   end
 
   def move_piece(start_pos, end_pos)
@@ -62,16 +67,42 @@ class Board
     possible_moves = []
     @grid.each.with_index{|row,i|
       row.each_with_index{|cell,j|
-        p cell
-        p [i,j]
-        p cell.empty?
-        # possible_moves += cell.moves([i,j],self) unless cell.empty?
-      #  unless cell.empty?
          possible_moves += cell.moves([i,j],self)
-      #  end
       }
     }
     possible_moves.include? king_pos
+  end
+
+  def in_check_mate? color
+    # Get all pieces of color under check
+    # Find all possible moves of all pieces
+    # And play move on board.cloned
+    # Check if still in check
+    # Return true if any in check
+
+    all_pieces = @grid.each_with_index.reduce([]){|all_pieces, (row ,i)|
+      all_pieces += row.each_with_index.reduce([]){|pieces, (cell,j)|
+        cell.color == color ? pieces + [[cell,[i,j]]] : pieces
+      }
+    }
+    all_pieces.map {|piece,start_pos|
+      piece.moves(start_pos,self).map {|move|
+        duped_board = dup
+        duped_board.move_piece(start_pos,move)
+        duped_board
+      }
+    }
+    .flatten
+    .all? {|board| board.in_check?(color)}
+  end
+
+  def dup
+    grid_clone = @grid.map{|row|
+      row.map{|cell|
+        cell.empty? ? NullPiece.instance : cell.clone
+      }
+    }
+    Board.new(grid_clone)
   end
 
 end
